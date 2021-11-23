@@ -5,18 +5,18 @@ import "./index.css";
 class FilmItem extends React.Component {
   render() {
     const film = this.props.film;
-    const title = film.title;
-    const filmID = film.filmID;
-    const length = film.length;
-    const languageID = film.languageID;
-    const description = film.description;
+    // const title = film.title;
+    // const filmID = film.filmID;
+    // const length = film.length;
+    // const languageID = film.languageID;
+    // const description = film.description;
     return (
       <tr>
-        <td>{title}</td>
-        <td>{filmID}</td>
-        <td>{length}</td>
-        <td>{languageID}</td>
-        <td>{description}</td>
+        <td>{film.title}</td>
+        <td>{film.film_id}</td>
+        <td>{film.length}</td>
+        <td>{film.language_id}</td>
+        <td>{film.description}</td>
       </tr>
     );
   }
@@ -28,11 +28,11 @@ class FilmList extends React.Component {
       <table>
         <thead>
           <tr>
-            {/* <th>Title</th>
+            <th>Title</th>
             <th>Film ID</th>
             <th>Length</th>
             <th>Language ID</th>
-            <th>Description</th> */}
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>{this.props.rows}</tbody>
@@ -181,78 +181,53 @@ class SearchBar extends React.Component {
   }
 }
 
-class GetFilms extends React.Component {
-  render() {
-    const reactPackage = this.props.reactPackage;
 
-    return (
-      <tr>
-        <td>{reactPackage.title}</td>
-        <td>{reactPackage.film_id}</td>
-        <td>{reactPackage.length}</td>
-        <td>{reactPackage.description}</td>
-        <td>{reactPackage.language_id}</td>
-      </tr>
-    );
-  }
-}
+// class ReactPackages extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       movies: [],
+//       totalPackages: null,
+//     };
+//   }
 
-class ReactPackages extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movies: [],
-      totalPackages: null,
-    };
-  }
 
-  componentDidMount() {
-    fetch("http://3.92.83.234:8080/films")
-      .then((response) => response.json())
-      .then((jsonData) => {
-        const packages = jsonData.slice(0,20);
-        this.setState({
-          movies: packages,
-          totalPackages: jsonData.total,
-        });
-      });
-  }
 
-  render() {
-    const rows = [];
-    this.state.movies.forEach((reactPackage) => {
-      rows.push(<GetFilms reactPackage={reactPackage} />);
-    });
+  // render() {
+  //   const rows = [];
+  //   this.state.movies.forEach((reactPackage) => {
+  //     rows.push(<GetFilms reactPackage={reactPackage} />);
+  //   });
 
-    return (
-      <div>
-        <h1>FILM RESULTS</h1>
-        <thead style={({ color: "blue" }, { textAlign: "" })}>
-          <tr>
-            <td>
-              <b>Title</b>
-            </td>
-            <td>
-              <b>Film ID</b>
-            </td>
-            <td>
-              <b>Length</b>
-            </td>
-            <td>
-              <b>Description</b>
-            </td>
-            <td>
-              <b>Language ID</b>
-            </td>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
+  //   return (
+  //     <div>
+  //       <h1>FILM RESULTS</h1>
+  //       <thead style={({ color: "blue" }, { textAlign: "" })}>
+  //         <tr>
+  //           <td>
+  //             <b>Title</b>
+  //           </td>
+  //           <td>
+  //             <b>Film ID</b>
+  //           </td>
+  //           <td>
+  //             <b>Length</b>
+  //           </td>
+  //           <td>
+  //             <b>Description</b>
+  //           </td>
+  //           <td>
+  //             <b>Language ID</b>
+  //           </td>
+  //         </tr>
+  //       </thead>
+  //       <tbody>{rows}</tbody>
 
-        <h4>{this.state.totalPackages}</h4>
-      </div>
-    );
-  }
-}
+  //       <h4>{this.state.totalPackages}</h4>
+  //     </div>
+  //   );
+  // }
+
 
 class AddFilm extends React.Component {
   constructor(props) {
@@ -275,6 +250,22 @@ class AddFilm extends React.Component {
   }
 }
 
+// class GetFilms extends React.Component {
+//   render() {
+//     const reactPackage = this.props.reactPackage;
+
+//     return (
+//       <tr>
+//         <td>{reactPackage.title}</td>
+//         <td>{reactPackage.film_id}</td>
+//         <td>{reactPackage.length}</td>
+//         <td>{reactPackage.description}</td>
+//         <td>{reactPackage.language_id}</td>
+//       </tr>
+//     );
+//   }
+// }
+
 class FilmDatabase extends React.Component {
   constructor(props) {
     super(props);
@@ -287,7 +278,17 @@ class FilmDatabase extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  
+  componentDidMount() {
+    fetch("http://3.92.83.234:8080/films")
+      .then((response) => response.json())
+      .then((jsonData) => {
+        const filminfo = jsonData.slice(0, 100);
+        this.setState({
+          movies: filminfo,
+          rows: filminfo,
+        });
+      });
+  }
 
   handleFiltertextChange(filterText) {
     this.setState({
@@ -302,6 +303,7 @@ class FilmDatabase extends React.Component {
 
     const rows = [];
     const movies = this.state.movies;
+
     movies.forEach((film) => {
       if (film.title.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
         return;
@@ -335,12 +337,19 @@ class FilmDatabase extends React.Component {
             <FilmEntry />
           </div>
           <div>
-            <FilmList />
+            <h2>Film Results</h2>
+          </div>
+          <div>
+            <FilmList 
+              movies={this.state.movies}
+              filterText={this.state.filterText}
+              rows={renderRows} 
+            />
           </div>
         </div>
-        <ReactPackages
+        {/* <GetFilms
         movies={this.state.movies}
-        rows={renderRows} />
+        rows={renderRows} /> */}
         <AddFilm />
       </div>
     );
