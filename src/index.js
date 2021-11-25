@@ -145,27 +145,43 @@ class FilmEntry extends React.Component {
   }
 }
 
+
 class RemoveFilm extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      DeleteFilm: "",
-    };
-    this.handleDeleteFilm = this.handleDeleteFilm.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleDeleteFilm(event) {
-    this.setState({ DeleteFilm: event.target.value });
-  }
-  handleSubmit(event) {
-    alert("A Film was successfully removed: " + this.state.DeleteFilm);
-  }
+      super(props);
+      this.state = {
+          DeleteFilm: "",
+      }
+  
+  this.handleDeleteFilm = this.handleDeleteFilm.bind(this);
+  this.handleSubmit = this.handleSubmit.bind(this);
+  };
 
+  deleteFunction() {
+      const film_id = this.state.DeleteFilm;
+      
+      fetch("http://localhost:8080/removeFilm/"+film_id, {method: 'DELETE'})
+      .then(() => this.setState({status: "Delete Successful" })); 
+  }
+  
+  handleDeleteFilm(event) { 
+      this.setState({
+          DeleteFilm: event.target.value,
+      })
+      };
+
+  handleSubmit(event) { 
+      event.preventDefault();
+      this.deleteFunction();
+      alert("A Film was successfully removed: " + this.state.DeleteFilm);
+      };
+  
   render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
+      return (
+      <div class="text-center">
+              <form onSubmit={(event) =>
+        {this.handleSubmit(event)}}>
         <label>
-          Remove:
           <input
             type="text"
             placeholder="Enter Film ID"
@@ -175,9 +191,11 @@ class RemoveFilm extends React.Component {
         </label>
         <input type="submit" value="Remove Film" />
       </form>
-    );
-  }
-}
+      </div>
+      );
+  }   
+};
+
 
 class SearchBar extends React.Component {
   constructor(props) {
