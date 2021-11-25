@@ -7,11 +7,11 @@ class FilmItem extends React.Component {
     const film = this.props.film;
     return (
       <tr>
-      <td>{film.film_id}</td>
-      <td>{film.language_id}</td>
-      <td>{film.title}</td>
-      <td>{film.length}</td>
-      <td>{film.description}</td>
+        <td>{film.film_id}</td>
+        <td>{film.language_id}</td>
+        <td>{film.title}</td>
+        <td>{film.length}</td>
+        <td>{film.description}</td>
       </tr>
     );
   }
@@ -23,11 +23,11 @@ class FilmList extends React.Component {
       <table>
         <thead>
           <tr>
-          <th>Film ID</th>
-          <th>Language ID</th>
-          <th>Title</th>
-          <th>Length</th>
-          <th>Description</th>
+            <th>Film ID</th>
+            <th>Language ID</th>
+            <th>Title</th>
+            <th>Length</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>{this.props.rows}</tbody>
@@ -41,23 +41,23 @@ class FilmEntry extends React.Component {
     super(props);
     this.state = {
       AddTitle: "",
-      AddFilmID: "",
+      // AddFilmID: "",
       AddDescription: "",
       AddLength: "",
       AddLanguageID: "",
     };
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
-    this.handleChangeFilmID = this.handleChangeFilmID.bind(this);
+    // this.handleChangeFilmID = this.handleChangeFilmID.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
     this.handleChangeLength = this.handleChangeLength.bind(this);
     this.handleChangeLanguageID = this.handleChangeLanguageID.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChangeFilmID(event) {
-    this.setState({ AddFilmID: event.target.value });
-  }
+  // handleChangeFilmID(event) {
+  //   this.setState({ AddFilmID: event.target.value });
+  // }
   handleChangeLanguageID(event) {
     this.setState({ AddLanguageID: event.target.value });
   }
@@ -70,54 +70,46 @@ class FilmEntry extends React.Component {
   handleChangeLength(event) {
     this.setState({ AddLength: event.target.value });
   }
-  
+
   handleSubmit(event) {
     alert("A Film was successfully added: " + this.state.AddTitle);
-   
-      const film_id = this.state.AddFilmID;
-      const language_id = this.state.AddLanguageID;
-      const title = this.state.AddTitle;
-      const length = this.state.AddLength;
-      const description = this.state.AddDescription;
-      const requestOptions = {
-        method: "POST",
-        headers: { "Accept": "application/json",
-          "Content-Type": "application/json" },
-        body: JSON.stringify({
-          film_id: film_id,
-          language_id: language_id,
-          title: title,
-          length: length,
-          description: description,
-        })
-      };
 
-      fetch("http://localhost:8080/films/addfilmbody", requestOptions).then((response) =>
-        response.json()
-      //   .then(data => this.setState({ AddTitle: data.title,
-      //     AddLength: data.length,
-      //     AddFilmID: data.film_id,
-      //     AddDescription: data.description,
-      //     // AddLanguageID: data.language_id,
-      //   })
-      // )
-      )
-  
-      // .then(data => this.setState({ postTitle: data.film_id }));
-    }
-  
+    // const film_id = this.state.AddFilmID;
+    const language_id = this.state.AddLanguageID;
+    const title = this.state.AddTitle;
+    const length = this.state.AddLength;
+    const description = this.state.AddDescription;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // film_id: film_id,
+        language_id: language_id,
+        title: title,
+        length: length,
+        description: description,
+      }),
+    };
+
+    fetch("http://localhost:8080/films/addfilmbody", requestOptions).then(
+      (response) => response.json()
+    );
+  }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-        ID:
+          {/* ID: 
           <input
             type="text"
             placeholder="Enter Film ID"
             value={this.state.AddFilmID}
             onChange={this.handleChangeFilmID}
-          />
+          /> */}
           Language ID:
           <input
             type="text"
@@ -146,7 +138,6 @@ class FilmEntry extends React.Component {
             value={this.state.AddDescription}
             onChange={this.handleChangeDescription}
           />
-        
         </label>
         <input type="submit" value="Add Film" />
       </form>
@@ -154,7 +145,39 @@ class FilmEntry extends React.Component {
   }
 }
 
+class RemoveFilm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      DeleteFilm: "",
+    };
+    this.handleDeleteFilm = this.handleDeleteFilm.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleDeleteFilm(event) {
+    this.setState({ DeleteFilm: event.target.value });
+  }
+  handleSubmit(event) {
+    alert("A Film was successfully removed: " + this.state.DeleteFilm);
+  }
 
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Remove:
+          <input
+            type="text"
+            placeholder="Enter Film ID"
+            value={this.state.DeleteFilm}
+            onChange={this.handleDeleteFilm}
+          />
+        </label>
+        <input type="submit" value="Remove Film" />
+      </form>
+    );
+  }
+}
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -177,7 +200,7 @@ class SearchBar extends React.Component {
       >
         <input
           type="text"
-          placeholder="Search Film"
+          placeholder="Search Film by Title"
           value={this.props.filterText}
           onChange={this.handleFiltertextChange}
         />
@@ -186,7 +209,6 @@ class SearchBar extends React.Component {
     );
   }
 }
-
 
 class FilmDatabase extends React.Component {
   constructor(props) {
@@ -239,41 +261,52 @@ class FilmDatabase extends React.Component {
   render() {
     const renderRows = [];
     this.state.rows.forEach((film) => {
-      renderRows.push(<FilmItem film={film} key={film.title} />)
-    })
+      renderRows.push(<FilmItem film={film} key={film.title} />);
+    });
     return (
       <div>
         <div>
           <h1>Film Database</h1>
           <div />
           <div>
+            <h2>Search for Film</h2>
+          </div>
+          <div>
             <SearchBar
-                filterText={this.state.filterText}
-                onFilterTextChange={this.handleFiltertextChange}
-                onFilterTextSubmit={this.handleSubmit}
-                handleClick={this.handleClick}
-              />
+              filterText={this.state.filterText}
+              onFilterTextChange={this.handleFiltertextChange}
+              onFilterTextSubmit={this.handleSubmit}
+              handleClick={this.handleClick}
+            />
           </div>
           <br />
           <div>
+            <h2>Add Film to Database</h2>
+          </div>
+          <div>
             <FilmEntry />
+          </div>
+          <br />
+          <div>
+            <h2>Remove Film from Database</h2>
+          </div>
+          <div>
+            <RemoveFilm />
           </div>
           <div>
             <h2>Film Results</h2>
           </div>
-          <div>
-            <FilmList 
+          <div className="FilmDatabase">
+            <FilmList
               movies={this.state.movies}
               filterText={this.state.filterText}
-              rows={renderRows} 
+              rows={renderRows}
             />
           </div>
         </div>
-        {/* <AddFilm /> */}
       </div>
     );
   }
 }
-
 
 ReactDOM.render(<FilmDatabase />, document.getElementById("root"));
