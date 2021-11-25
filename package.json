@@ -2,7 +2,7 @@
   "name": "database-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://3.92.83.234:8080/",
+  "proxy": "https://http://3.92.83.234:8080/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
