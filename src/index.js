@@ -94,7 +94,7 @@ class FilmEntry extends React.Component {
       }),
     };
 
-    fetch("http://localhost:8080/films/addfilmbody", requestOptions).then(
+    fetch("http://34.207.113.153:8080/films/addfilmbody", requestOptions).then(
       (response) => response.json()
     );
   }
@@ -160,7 +160,7 @@ class RemoveFilm extends React.Component {
   deleteFunction() {
       const film_id = this.state.DeleteFilm;
       
-      fetch("http://localhost:8080/removeFilm/"+film_id, {method: 'DELETE'})
+      fetch("http://34.207.113.153:8080/removeFilm/"+film_id, {method: 'DELETE'})
       .then(() => this.setState({status: "Delete Successful" })); 
   }
   
@@ -241,7 +241,7 @@ class FilmDatabase extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8080/films")
+    fetch("http://34.207.113.153:8080/films")
       .then((response) => response.json())
       .then((jsonData) => {
         const filminfo = jsonData;
@@ -289,7 +289,7 @@ class FilmDatabase extends React.Component {
           <div>
             <h2>Search for Film</h2>
           </div>
-          <div>
+          <div className= "SearchBar">
             <SearchBar
               filterText={this.state.filterText}
               onFilterTextChange={this.handleFiltertextChange}
@@ -301,7 +301,7 @@ class FilmDatabase extends React.Component {
           <div>
             <h2>Add Film to Database</h2>
           </div>
-          <div>
+          <div className= "FilmEntry">
             <FilmEntry />
           </div>
           <br />
@@ -309,7 +309,7 @@ class FilmDatabase extends React.Component {
             <h2>Remove Film from Database</h2>
           </div>
           <div>
-            <RemoveFilm />
+            <RemoveFilm  className= "RemoveFilm"/>
           </div>
           <div>
             <h2>Film Results</h2>
