@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
+document.body.style.background = "orange";
+
 class FilmItem extends React.Component {
   render() {
     const film = this.props.film;
@@ -145,57 +147,58 @@ class FilmEntry extends React.Component {
   }
 }
 
-
 class RemoveFilm extends React.Component {
   constructor(props) {
-      super(props);
-      this.state = {
-          DeleteFilm: "",
-      }
-  
-  this.handleDeleteFilm = this.handleDeleteFilm.bind(this);
-  this.handleSubmit = this.handleSubmit.bind(this);
-  };
+    super(props);
+    this.state = {
+      DeleteFilm: "",
+    };
+
+    this.handleDeleteFilm = this.handleDeleteFilm.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
   deleteFunction() {
-      const film_id = this.state.DeleteFilm;
-      
-      fetch("http://34.207.113.153:8080/removeFilm/"+film_id, {method: 'DELETE'})
-      .then(() => this.setState({status: "Delete Successful" })); 
+    const film_id = this.state.DeleteFilm;
+
+    fetch("http://34.207.113.153:8080/removeFilm/" + film_id, {
+      method: "DELETE",
+    }).then(() => this.setState({ status: "Delete Successful" }));
   }
-  
-  handleDeleteFilm(event) { 
-      this.setState({
-          DeleteFilm: event.target.value,
-      })
-      };
 
-  handleSubmit(event) { 
-      event.preventDefault();
-      this.deleteFunction();
-      alert("A Film was successfully removed: " + this.state.DeleteFilm);
-      };
-  
+  handleDeleteFilm(event) {
+    this.setState({
+      DeleteFilm: event.target.value,
+    });
+  }
+
+  handleSubmit(event) {
+    this.deleteFunction();
+    alert("A Film was successfully removed: " + this.state.DeleteFilm);
+  }
+
   render() {
-      return (
+    return (
       <div class="text-center">
-              <form onSubmit={(event) =>
-        {this.handleSubmit(event)}}>
-        <label>
-          <input
-            type="text"
-            placeholder="Enter Film ID"
-            value={this.state.DeleteFilm}
-            onChange={this.handleDeleteFilm}
-          />
-        </label>
-        <input type="submit" value="Remove Film" />
-      </form>
+        <form
+          onSubmit={(event) => {
+            this.handleSubmit(event);
+          }}
+        >
+          <label>
+            <input
+              type="text"
+              placeholder="Enter Film ID"
+              value={this.state.DeleteFilm}
+              onChange={this.handleDeleteFilm}
+            />
+          </label>
+          <input type="submit" value="Remove Film" />
+        </form>
       </div>
-      );
-  }   
-};
-
+    );
+  }
+}
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -285,11 +288,12 @@ class FilmDatabase extends React.Component {
       <div>
         <div>
           <h1>Film Database</h1>
+          <img src="https://c.tenor.com/J_6Rv7jZ5K4AAAAC/cinema-321.gif" />
           <div />
-          <div>
+          <div className="Header">
             <h2>Search for Film</h2>
           </div>
-          <div className= "SearchBar">
+          <div className="SearchBar">
             <SearchBar
               filterText={this.state.filterText}
               onFilterTextChange={this.handleFiltertextChange}
@@ -299,17 +303,18 @@ class FilmDatabase extends React.Component {
           </div>
           <br />
           <div>
-            <h2>Add Film to Database</h2>
+            {/* <img src= "https://thumbs.gfycat.com/GreatWeirdArcticduck-size_restricted.gif"/> */}
           </div>
-          <div className= "FilmEntry">
+          <div className="FilmEntry">
+            <h2>Add Film to Database</h2>
             <FilmEntry />
           </div>
           <br />
           <div>
-            <h2>Remove Film from Database</h2>
+            <h2>Remove Film from Database </h2>
           </div>
           <div>
-            <RemoveFilm  className= "RemoveFilm"/>
+            <RemoveFilm className="RemoveFilm" />
           </div>
           <div>
             <h2>Film Results</h2>

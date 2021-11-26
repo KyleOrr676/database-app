@@ -5,4 +5,16 @@
     padding: 0 4px;
     overflow-wrap: break-word;
     overflow: auto;
-  }  
+  }
+
+  body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: whitesmoke;
+  }
+.FilmDatabase {
+    margin: auto;
+    width: 95%;
+    border: 3px solid black;
+    padding: 10px;
+  }
+  
