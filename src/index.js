@@ -1,20 +1,43 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import "./bootstrap.min.css";
+import "./bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Container, Row, Col } from "react-bootstrap";
 
-document.body.style.background = "orange";
+class Header extends React.Component{
+  render(){
+    return(
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Film Database</a>
+    </div>
+    </nav>
+    )
+  }
+}
 
 class FilmItem extends React.Component {
   render() {
     const film = this.props.film;
     return (
-      <tr>
-        <td>{film.film_id}</td>
-        <td>{film.language_id}</td>
-        <td>{film.title}</td>
-        <td>{film.length}</td>
-        <td>{film.description}</td>
-      </tr>
+      // <tr>
+      //   <td>{film.film_id}</td>
+      //   <td>{film.language_id}</td>
+      //   <td>{film.title}</td>
+      //   <td>{film.length}</td>
+      //   <td>{film.description}</td>
+      // </tr>
+      <Container>
+        <Row>
+          <Col>{film.film_id}</Col>
+          {/* <Col>{film.language_id}</Col> */}
+          <Col>{film.title}</Col>
+          <Col>{film.length}</Col>
+          <Col>{film.description}</Col>
+        </Row>
+      </Container>
     );
   }
 }
@@ -22,18 +45,30 @@ class FilmItem extends React.Component {
 class FilmList extends React.Component {
   render() {
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Film ID</th>
-            <th>Language ID</th>
-            <th>Title</th>
-            <th>Length</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>{this.props.rows}</tbody>
-      </table>
+      // <table striped bordered hover variant="dark">
+      //   <thead>
+      //     <tr>
+      //       <th>Film ID</th>
+      //       <th>Language ID</th>
+      //       <th>Title</th>
+      //       <th>Length</th>
+      //       <th>Description</th>
+      //     </tr>
+      //   </thead>
+      //   <tbody>{this.props.rows}</tbody>
+      // </table>
+      <div className="FilmList">
+        <Container>
+          <Row>
+            <Col>Film ID</Col>
+            {/* <Col>Language ID</Col> */}
+            <Col>Title</Col>
+            <Col>Length</Col>
+            <Col>Description</Col>
+          </Row>
+          <Row>{this.props.rows}</Row>
+        </Container>
+      </div>
     );
   }
 }
@@ -46,23 +81,23 @@ class FilmEntry extends React.Component {
       // AddFilmID: "",
       AddDescription: "",
       AddLength: "",
-      AddLanguageID: "",
+      // AddLanguageID: "",
     };
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     // this.handleChangeFilmID = this.handleChangeFilmID.bind(this);
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
     this.handleChangeLength = this.handleChangeLength.bind(this);
-    this.handleChangeLanguageID = this.handleChangeLanguageID.bind(this);
+    // this.handleChangeLanguageID = this.handleChangeLanguageID.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // handleChangeFilmID(event) {
   //   this.setState({ AddFilmID: event.target.value });
   // }
-  handleChangeLanguageID(event) {
-    this.setState({ AddLanguageID: event.target.value });
-  }
+  // handleChangeLanguageID(event) {
+  //   this.setState({ AddLanguageID: event.target.value });
+  // }
   handleChangeTitle(event) {
     this.setState({ AddTitle: event.target.value });
   }
@@ -77,7 +112,7 @@ class FilmEntry extends React.Component {
     alert("A Film was successfully added: " + this.state.AddTitle);
 
     // const film_id = this.state.AddFilmID;
-    const language_id = this.state.AddLanguageID;
+    // const language_id = this.state.AddLanguageID;
     const title = this.state.AddTitle;
     const length = this.state.AddLength;
     const description = this.state.AddDescription;
@@ -89,14 +124,14 @@ class FilmEntry extends React.Component {
       },
       body: JSON.stringify({
         // film_id: film_id,
-        language_id: language_id,
+        // language_id: language_id,
         title: title,
         length: length,
         description: description,
       }),
     };
 
-    fetch("http://34.207.113.153:8080/films/addfilmbody", requestOptions).then(
+    fetch("http://localhost:8080/films/addfilmbody", requestOptions).then(
       (response) => response.json()
     );
   }
@@ -112,19 +147,20 @@ class FilmEntry extends React.Component {
             value={this.state.AddFilmID}
             onChange={this.handleChangeFilmID}
           /> */}
-          Language ID:
+          {/* Language ID:
           <input
             type="text"
             placeholder="Enter Film Language ID"
             value={this.state.AddLanguageID}
             onChange={this.handleChangeLanguageID}
-          />
+          /> */}
           Title:
           <input
             type="text"
             placeholder="Enter Film Title"
             value={this.state.AddTitle}
             onChange={this.handleChangeTitle}
+            className= "card border-primary mb-3"
           />
           Length:
           <input
@@ -132,6 +168,7 @@ class FilmEntry extends React.Component {
             placeholder="Enter Film Length"
             value={this.state.AddLength}
             onChange={this.handleChangeLength}
+            className= "card border-primary mb-3"
           />
           Description:
           <input
@@ -139,9 +176,11 @@ class FilmEntry extends React.Component {
             placeholder="Enter Film Description"
             value={this.state.AddDescription}
             onChange={this.handleChangeDescription}
+            className= "card border-primary mb-3"
           />
         </label>
-        <input type="submit" value="Add Film" />
+        {/* <input type="submit" value="Add Film" /> */}
+        <Button class="btn btn-secondary disabled" onClick={(event) => this.handleSubmit(event)}>Add Film</Button>
       </form>
     );
   }
@@ -161,7 +200,7 @@ class RemoveFilm extends React.Component {
   deleteFunction() {
     const film_id = this.state.DeleteFilm;
 
-    fetch("http://34.207.113.153:8080/removeFilm/" + film_id, {
+    fetch("http://localhost:8080/removeFilm/" + film_id, {
       method: "DELETE",
     }).then(() => this.setState({ status: "Delete Successful" }));
   }
@@ -179,26 +218,31 @@ class RemoveFilm extends React.Component {
 
   render() {
     return (
-      <div class="text-center">
+      <div >
         <form
           onSubmit={(event) => {
             this.handleSubmit(event);
           }}
         >
-          <label>
+       
+          
             <input
               type="text"
               placeholder="Enter Film ID"
               value={this.state.DeleteFilm}
               onChange={this.handleDeleteFilm}
+              className= "card border-primary mb-3"
             />
-          </label>
-          <input type="submit" value="Remove Film" />
+          
+          {/* <input type="submit" value="Remove Film" /> */}
+          <Button class="btn btn-secondary disabled" onClick={(event) => this.handleSubmit(event)} >Remove Film</Button>
         </form>
       </div>
     );
   }
 }
+
+class UpdateFilm extends React.Component {}
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -219,13 +263,16 @@ class SearchBar extends React.Component {
           this.props.handleClick(e);
         }}
       >
+     
         <input
           type="text"
           placeholder="Search Film by Title"
           value={this.props.filterText}
           onChange={this.handleFiltertextChange}
+          className= "card border-primary mb-3"
         />
-        <input type="submit" value="Search"></input>
+        {/* <input type="submit" value="Search"></input> */}
+        <Button class="btn btn-secondary disabled" onClick={(e) => this.handleClick(e)}>Search</Button>
       </form>
     );
   }
@@ -244,7 +291,7 @@ class FilmDatabase extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://34.207.113.153:8080/films")
+    fetch("http://localhost:8080/films")
       .then((response) => response.json())
       .then((jsonData) => {
         const filminfo = jsonData;
@@ -285,49 +332,39 @@ class FilmDatabase extends React.Component {
       renderRows.push(<FilmItem film={film} key={film.title} />);
     });
     return (
-      <div>
-        <div>
-          <h1>Film Database</h1>
-          <img src="https://c.tenor.com/J_6Rv7jZ5K4AAAAC/cinema-321.gif" />
-          <div />
-          <div className="Header">
-            <h2>Search for Film</h2>
-          </div>
-          <div className="SearchBar">
+      <div className = "All">
+      <Header />
+        <Container>
+          <Row>
+            <Col>
+            <div class="card border-primary mb-3">
+          <Container>
             <SearchBar
               filterText={this.state.filterText}
               onFilterTextChange={this.handleFiltertextChange}
               onFilterTextSubmit={this.handleSubmit}
               handleClick={this.handleClick}
             />
-          </div>
-          <br />
-          <div>
-            {/* <img src= "https://thumbs.gfycat.com/GreatWeirdArcticduck-size_restricted.gif"/> */}
-          </div>
-          <div className="FilmEntry">
-            <h2>Add Film to Database</h2>
             <FilmEntry />
-          </div>
-          <br />
-          <div>
-            <h2>Remove Film from Database </h2>
-          </div>
-          <div>
-            <RemoveFilm className="RemoveFilm" />
-          </div>
-          <div>
+            <RemoveFilm  />
+            </Container>
+            </div>
+            </Col>
+          
             <h2>Film Results</h2>
-          </div>
-          <div className="FilmDatabase">
+          <Col>
+          <div className="FilmTable">
             <FilmList
               movies={this.state.movies}
               filterText={this.state.filterText}
               rows={renderRows}
             />
+
           </div>
+          </Col>
+            </Row>
+          </Container>
         </div>
-      </div>
     );
   }
 }

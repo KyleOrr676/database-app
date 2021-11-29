@@ -1,20 +1,17 @@
-.FilmDatabase {
+.FilmTable {
     float: left;
     height: 470px;
-    width: 80%;
+    width: 100%;
     padding: 0 4px;
     overflow-wrap: break-word;
     overflow: auto;
   }
-
   body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: whitesmoke;
+      color: white;
   }
-.FilmDatabase {
+.FilmTable {
     margin: auto;
-    width: 95%;
+    width: 100%;
     border: 3px solid black;
-    padding: 10px;
+    padding: 5px;
   }
-  
